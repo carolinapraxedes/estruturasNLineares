@@ -2,23 +2,15 @@ package BinarySearchTree;
 
 public class BinarySearchTreeTest {
 
-	public static void main(String[] args) {
-		 BinarySearchTree tree = new BinarySearchTree();
-
-	        
-	        tree.insert(50);
-	        tree.insert(20);
-	        tree.insert(40);
-	        tree.insert(70);
-	        tree.insert(60);
-	        tree.insert(80);
-
-	        System.out.print("Em Ordem: ");
-	        tree.inOrder(tree.root);
-	        
-	        System.out.println();
-	        System.out.println("procurando pela a chave 55: " + tree.search(tree.root, 55));
-
+	public static void main(String[] args) throws NodeExistsException {
+		 BinarySearchTree tree = new BinarySearchTree(9);
+		 	Node no2 = tree.insert(8);
+		 	Node no3 = tree.insert(10);
+		 	Node no4 = tree.insert(5);
+		 	Node no5 = tree.insert(6);
+		 	tree.printNo();
+		 	tree.remove(5);
+		 	tree.printNo();
 	}
 
 }
