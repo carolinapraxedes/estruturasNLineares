@@ -2,6 +2,7 @@ package BinarySearchTree;
 
 import java.util.ArrayList;
 
+
 public class BinarySearchTree {	
 	   Node root;
 	   int size;
@@ -208,9 +209,31 @@ public class BinarySearchTree {
 	    public Node getRoot() {
 	    	return root;
 	    }
+		public int height(Node no) {
+			if(no == null) {
+				return -1;
+			}
+			int sonLeftNo = height(no.getLeftChild());
+			int sonRightNo = height(no.getRightChild());
+			
+			if(sonLeftNo > sonRightNo) {
+				return sonLeftNo + 1;
+			}else {
+				return sonRightNo +1;
+			}
+
+		}
+
+		
+		public int depth(Node no) {
+			if(no == root) {
+				return 0;
+			}
+			return 1 + (depth(no.getParent()));
+		}
 
 	    
- 	    public int depth(int key) {
+ 	    /*public int depth(int key) {
 	        return depthNode(root, key, 0);
 	    }
 
@@ -238,7 +261,8 @@ public class BinarySearchTree {
 
 	        //a altura do nó passado vai ser a soma de 1 mais a altura da subárvore mais alta entre seus filhos
 	        return 1 + Math.max(leftHeight, rightHeight);
-	    }
+	    }*/
+	    
 
 	    /*void insert(int key) {
 	        root = insertNode(root, key);
