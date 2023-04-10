@@ -8,6 +8,8 @@ public class Node {
 		this.key = item;
 		this.left = null;
 		this.right = null;
+		
+		
 	}
 	
 	public int getKey(){
@@ -53,11 +55,11 @@ public class Node {
 	}
 	
 	public boolean hasLeftChild(Node no) {
-		System.out.println("Nó "+ no.getKey()+" has left child?");
+	
 		return no.getLeftChild()!=null;
 	}
 	public boolean hasRightChild(Node no) {
-		System.out.println("Nó "+ no.getKey()+" has right child?");
+		
 		return no.getRightChild()!=null;
 	}
 	

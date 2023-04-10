@@ -10,18 +10,17 @@ public class BinarySearchTree {
 	    public BinarySearchTree(int key) {
 	    	
 	        this.root = new Node(key);	        
-	        this.size = 1;
-	        ArrayNo.add(root);
+
 	    }
 	    
 
-		public boolean isInternal(Node no) {
-			return no.getRightChild() != null && no.getLeftChild()==null;
+	    public boolean isInternal(Node no) {
+			return no.getRightChild() != null || no.getLeftChild()==null;
 		}
 
 
 		public boolean isExternal(Node no) {
-			return no.getRightChild()== null || no.getLeftChild()==null;
+			return no.getRightChild()== null && no.getLeftChild()==null;
 		}
 		
 		public int size() {
@@ -37,42 +36,98 @@ public class BinarySearchTree {
 	        	return node;
 	        }
 	        if(key < node.getKey()) {
-	        	return search(node.getLeftChild(),key);
+	        	if(node.getLeftChild() != null) {
+	        		return search(node.getLeftChild(),key);
+	        	}else {
+	        		return node;
+	        	}
+	        	
 	        } else if(key == node.getKey()) {
 	        	return node;
 	        }
 	        else {
-	        	return search(node.getRightChild(), key);
+	        	if(node.getRightChild() != null) {
+	        		return search(node.getRightChild(), key);
+	        	}else {
+	        		return node;
+	        	}
+	        	
 	        }
 	            
 	    }
 
-	    public Node insert(int key) throws NodeExistsException  {
-	    	
-	    	Node no = search(root,key);
+	    public 	Node insert(int key) throws NodeExistsException  {
+	    	Node parent = search(root, key);
+	        if (parent.getKey() == key) {
+	            throw new NodeExistsException("Nó já existe");
+	        }
+
+	        Node newNode = new Node(key);
+	        newNode.setParent(parent);
+
+	        if (key < parent.getKey()) {
+	            parent.setLeftChild(newNode);
+	        } else {
+	            parent.setRightChild(newNode);
+	        }
+
+	        return newNode;
+	    
+	    	/*Node no = search(root,key);
 	    	if(no.getKey()== key) {
 	    		 throw new NodeExistsException("Nó já existe");
 	    	}else{
 	    		Node newNode = new Node(key);
 	    		newNode.setParent(no);
 	    		if(newNode.isRightChild()) {
-	    			no.setLeftChild(newNode);
-	    		}else {
 	    			no.setRightChild(newNode);
+	    		}else {
+	    			no.setLeftChild(newNode);
 	    		}
-	    		ArrayNo.add(newNode);
+	    		
 	    		return newNode;
-	    	}
+	    	}*/
 	    }
 	    
-	    public void printNo() {
-	    	for(int i=0;i<ArrayNo.size();i++) {
-	    		System.out.print(ArrayNo.get(i).getKey()+ " ");
-	    	}
-	    }
 	    
 	    public int remove(int key) throws NodeExistsException{
-	    	Node no = search(root,key);
+	        Node no = search(root,key);
+	        Node noParent = no.getParent();
+	        int removedKey = no.getKey();
+	        Node child = null;
+	        if(removedKey == 0) {
+	            throw new NodeExistsException("Nó não existe");
+	        }
+	        if(isExternal(no)) {   		
+	            if (no.isRightChild()) {
+	                noParent.setRightChild(null);
+	            }else {
+	                noParent.setLeftChild(null);
+	            }
+	            return removedKey;
+	        }
+	        if (hasOneChild(no)) {
+	            if(no.hasLeftChild(no)) {
+	                child = no.getLeftChild();
+	            }else {
+	                child = no.getRightChild();
+	            }
+	            if(no.isRightChild()) {
+	                noParent.setRightChild(child);
+	            }else {
+	                noParent.setLeftChild(child);
+	            }	    		
+	            child.setParent(noParent);
+	            return removedKey;
+	        }
+	        if(hasTwoChild(no)) {
+	            Node successor = successor(no);
+	            removedKey = remove(successor.getKey());
+	            return removedKey;
+	        }
+	        return removedKey;
+	        
+	    	/*Node no = search(root,key);
 	    	Node noParent = no.getParent();
 	    	key = no.getKey();
 	    	Node child = null;
@@ -110,7 +165,7 @@ public class BinarySearchTree {
 				key = successor.getKey();
 				return key;
 			}
-			return key;
+			return key;*/
 	    }
 	    
 	    public boolean hasOneChild(Node no) {
@@ -128,24 +183,32 @@ public class BinarySearchTree {
 	    		return successor(no.getLeftChild());
 	    	}
 	    }
-	    	
 	    
+	    public void inOrder(Node node) {
+	    	if (node == null) {
+	            return;
+	        }
+	        inOrder(node.getLeftChild());
+	        System.out.println(node.getKey());
+	        inOrder(node.getRightChild());
+		    }
+	    public void print(Node node) {
+		       if(node.getLeftChild() != null) {
+		    	   print(node.getLeftChild());
+		       }
+		       System.out.print(node.getKey()+" ");
+		       
+		       if(node.getRightChild()!=null) {
+		    	   
+		    	   print(node.getRightChild());
+		       }
+		    }
 	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
+	
+	    public Node getRoot() {
+	    	return root;
+	    }
+
 	    
  	    public int depth(int key) {
 	        return depthNode(root, key, 0);
@@ -200,7 +263,7 @@ public class BinarySearchTree {
 	    }
 			*/
 
-	    public void inOrder(Node node) {
+	    /*public void inOrder(Node node) {
 	       if(node.getLeftChild() != null) {
 	    	   inOrder(node.getLeftChild());
 	       }
@@ -210,7 +273,7 @@ public class BinarySearchTree {
 	    	   
 	    	   inOrder(node.getRightChild());
 	       }
-	    }
+	    }*/
 
 
 }
