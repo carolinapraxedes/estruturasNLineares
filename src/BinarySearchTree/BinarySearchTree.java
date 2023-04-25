@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 public class BinarySearchTree {	
-	 Node root;
+	   Node root;
 	   int size;
 	   ArrayList<Node> ArrayNo = new ArrayList<>();
 
@@ -198,8 +198,6 @@ public class BinarySearchTree {
 			}
 			return 1 + (depth(no.getParent()));
 		}
-
-
 
 
 }
