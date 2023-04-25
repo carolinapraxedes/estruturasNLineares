@@ -164,6 +164,13 @@ public class AVLTree{
         return getHeight(node.getLeftChild()) - getHeight(node.getRightChild());
     }
 
+    public Node rotationLeftSimple(Node no) {
+    	Node noUnbalanced = no.getRightChild();
+    	
+    	noUnbalanced.setParent(no.getParent());
+    	
+    	return noUnbalanced;
+    }
 
 
   
