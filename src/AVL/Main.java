@@ -10,12 +10,12 @@ public class Main {
 		 	tree.insert(8);
 		 	tree.insert(10);
 
-//		 	tree.insert(5);
-//		 	tree.insert(6);
+		 	tree.insert(5);
+		 	tree.insert(6);
 //		 	tree.insert(7);
 		 	
 		 	tree.printTree();
-		 	System.out.println(tree.getBalanceFactor(tree.getRoot()));
+		 	//System.out.println(tree.getBalanceFactor(tree.getRoot()));
 
 
 

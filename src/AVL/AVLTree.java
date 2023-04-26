@@ -3,7 +3,7 @@ package AVL;
 import java.util.ArrayList;
 
 import BinarySearchTree.BinarySearchTree;
-import BinarySearchTree.Node;
+
 import BinarySearchTree.NodeExistsException;
 
 public class AVLTree{
@@ -103,8 +103,11 @@ public class AVLTree{
         } else {
             parent.setRightChild(newNode);
         }
+        // Atualizar o fator de balanceamento ao longo do caminho percorrido
+        int FB = getBalanceFactor(newNode);
+        newNode.setFB(FB);
+
         return newNode;
-    
     }
     
     public void inOrder(Node node) {
@@ -135,7 +138,7 @@ public class AVLTree{
     	Object tree[][] = new Object[height(getRoot()) +1 ][ArrayNo.size()];
     	
     	for(int i = 0; i<ArrayNo.size();i++) {
-    		tree[depth(ArrayNo.get(i))][i] = ArrayNo.get(i).getKey();
+    		tree[depth(ArrayNo.get(i))][i] = ArrayNo.get(i).getKey() +"["+ getBalanceFactor(ArrayNo.get(i)) +"]";
     	}
     	
     	for(int l = 0;l<height(getRoot())+1;l++) {
@@ -150,19 +153,27 @@ public class AVLTree{
      * Métodos da árvore AVL
      * */
     
-    public int getHeight(Node node) {
-        if (node == null) {
-            return -1;
-        }
-        return Math.max(getHeight(node.getLeftChild()), getHeight(node.getRightChild())) +1;
-    }
+
     
     public int getBalanceFactor(Node node) {
-        if (node == null) {
-            return 0;
-        }
-        return getHeight(node.getLeftChild()) - getHeight(node.getRightChild());
+        int heightLeft = height(node.getLeftChild());
+        int heightRight = height(node.getRightChild());
+        return heightLeft - heightRight;
     }
+    
+    public Node balance(Node noUnbalanced) {
+    	Node noParent = noUnbalanced.getParent();
+    	Node noBalanced = null;
+    	
+    	int FB=0;
+    	if((noUnbalanced.getFB()<=1) && (noUnbalanced.getFB()>=-1)) {
+    		return noUnbalanced;
+    	}
+    	
+    	return  noBalanced;
+    	
+    }
+    
 
     public Node rotationLeftSimple(Node no) {
     	Node noUnbalanced = no.getRightChild();
