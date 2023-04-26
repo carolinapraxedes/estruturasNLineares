@@ -167,7 +167,19 @@ public class AVLTree{
     	
     	int FB=0;
     	if((noUnbalanced.getFB()<=1) && (noUnbalanced.getFB()>=-1)) {
+    		//está balanceado
     		return noUnbalanced;
+    	}else {
+    		//fazendo o balanceamento
+    		Node child;
+    		if(noParent !=null) {
+    			//se ele não for raiz
+    			if() {
+    				
+    			}else {
+    				
+    			}
+    		}
     	}
     	
     	return  noBalanced;
