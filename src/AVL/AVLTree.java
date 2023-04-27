@@ -161,24 +161,30 @@ public class AVLTree{
         return heightLeft - heightRight;
     }
     
-    public Node balance(Node noUnbalanced) {
-    	Node noParent = noUnbalanced.getParent();
+    public Node balance(Node no) {
+    	Node noParent = no.getParent();
     	Node noBalanced = null;
     	
     	int FB=0;
-    	if((noUnbalanced.getFB()<=1) && (noUnbalanced.getFB()>=-1)) {
+    	if((no.getFB()<=1) && (no.getFB()>=-1)) {
     		//está balanceado
-    		return noUnbalanced;
+    		return no;
     	}else {
     		//fazendo o balanceamento
     		Node child;
     		if(noParent !=null) {
     			//se ele não for raiz
-    			if() {
+    			if(no.getFB()== -2) { //rotação a esquerda
+    				child= no.getRightChild();
+    				FB=no.getRightChild().getFB();
     				
-    			}else {
-    				
-    			}
+    				if(FB<=0) { 
+    					//rotação simples
+    					rotationLeftSimple(no);
+    				}else if(FB>0) {
+    					//rotação dupla
+    				}
+    			}        			
     		}
     	}
     	
@@ -187,12 +193,22 @@ public class AVLTree{
     }
     
 
-    public Node rotationLeftSimple(Node no) {
-    	Node noUnbalanced = no.getRightChild();
+    public Node rotationLeftSimple(Node no) { //ESQUERDA
     	
-    	noUnbalanced.setParent(no.getParent());
+    	Node child = no.getRightChild(); // filho
     	
-    	return noUnbalanced;
+    	child.setParent(no.getParent()); //o novo pai vai ser o avô
+    	child.setLeftChild(no);// pai vai ser filho esquerdo
+    	
+    	no.setParent(child);// o pai vai ser o filho
+    	
+    	//atualizando o FB
+    	 int fbNo = no.getFB();
+    	 int fbChild = child.getFB();
+    	 no.setFB(fbNo - 1 - Math.max(0, fbChild));
+    	 child.setFB(fbChild - 1 + Math.min(0, no.getFB()));
+    	
+    	return child;
     }
 
 
