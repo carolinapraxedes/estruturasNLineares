@@ -2,9 +2,6 @@ package AVL;
 
 import java.util.ArrayList;
 
-import BinarySearchTree.BinarySearchTree;
-
-import BinarySearchTree.NodeExistsException;
 
 public class AVLTree{
 	Node root;
@@ -96,7 +93,7 @@ public class AVLTree{
         }
 
         Node newNode = new Node(key);
-        checkBalance(newNode);
+        
         newNode.setParent(parent);
 
         if (key < parent.getKey()) {
@@ -117,15 +114,79 @@ public class AVLTree{
      * Métodos da árvore AVL
      * */
     
+    public void updateBalanceFactor(Node node,int InsertOrRemove) {    	
+    	Node father = node.getParent();
+    	boolean stop = false;
+    	while(!stop && father != null) {
+    		if(node.getKey() > father.getKey()) {
+    			//se for filho direito
+    			father.FB = (father.getFB()+(-1*InsertOrRemove));
+    		}else {
+    			//se for filho esquerdo
+    			father.FB = (father.getFB()+(1*InsertOrRemove));
+    		}
+    		
+    		Node nodeBalanced = getBalance(node,InsertOrRemove);
+    		if(node != nodeBalanced) {
+    			node = nodeBalanced;
+    			continue;
+    		}
+    		if((Node)father==null) {
+    			stop=true;
+    		}if((father.getFB()==0)&&(InsertOrRemove==1) || ((father.getFB()!=0) && (InsertOrRemove == -1))) {    			
+    			stop=true;
+    		}
+    		node = node.getParent();
+    		
+    	}
+    }
 
     
-    public int getBalanceFactor(Node node) {
+    public Node getBalance(Node node,int InsertOrRemove) {
+    	Node father = node.getParent();
+    	int fb=0;
+    	
+    	if((node.getFB() <= 1) && (node.getFB() >= -1)) {
+    		return node; //está balanceado
+    	}else {
+    		//precisa balancear
+    		
+    		if(node.getParent()!=null) {
+    			if(node.getFB()== -2) {
+    				//esquerda
+    				Node sonRight = node.getRightChild();
+    				fb = sonRight.getFB();
+    				if(fb<=0) {
+    					//simples
+    				}else {
+    					//dupla
+    				}
+    				
+    			}else if(node.getFB()== 2) {
+    				//direita
+    			}
+    			
+    			
+    			
+    			/*if(node.getKey() > node.getParent().getKey()) {
+    				int sonRight = 1;
+    			}else {
+    				int sonLeft = -1;
+    			}*/
+    		}
+    		
+    	}
+    	
+    	return node;
+    }
+    
+    /*public int getBalanceFactor(Node node) {
         int heightLeft = height(node.getLeftChild());
         int heightRight = height(node.getRightChild());
         return heightLeft - heightRight;
-    }
+    }*/
     
-    public void checkBalance(Node node) {
+    /*public void checkBalance(Node node) {
         if (node == null) {
             return;
         }
@@ -169,7 +230,7 @@ public class AVLTree{
             checkBalance(node.getParent());
         }
     }
-
+*/
     
  
     /*public Node balance(Node no) {
@@ -231,10 +292,10 @@ public class AVLTree{
 		    
 		    node.setParent(child);
 		    
-		    int FBNo = getBalanceFactor(node);
+		    /*int FBNo = getBalanceFactor(node);
 		    int FBChild = getBalanceFactor(child);
 		    node.setFB(FBNo);
-		    child.setFB(FBChild);
+		    child.setFB(FBChild);*/
 		    
 		    System.out.println("Rotação à esquerda simples aplicada em nó " + node.getKey());
 		    
