@@ -144,7 +144,9 @@ public class AVLTree{
     
     public Node getBalance(Node node,int InsertOrRemove) {
     	Node father = node.getParent();
+    	Node returnNode= null;
     	int fb=0;
+    	
     	
     	if((node.getFB() <= 1) && (node.getFB() >= -1)) {
     		return node; //está balanceado
@@ -158,8 +160,10 @@ public class AVLTree{
     				fb = sonRight.getFB();
     				if(fb<=0) {
     					//simples
+    					returnNode = rotateLeft(father);
     				}else {
     					//dupla
+    					returnNode = rotateLeftDouble(father);
     				}
     				
     			}else if(node.getFB()== 2) {
@@ -177,7 +181,7 @@ public class AVLTree{
     		
     	}
     	
-    	return node;
+    	return returnNode;
     }
     
     /*public int getBalanceFactor(Node node) {
@@ -265,7 +269,28 @@ public class AVLTree{
     }
     */
     
-	private Node rotateRight(Node node) {
+
+    
+	public Node rotateLeft(Node node) { //ESQUERDA
+		Node sonRight = node.getRightChild();
+		sonRight.setParent(node.getParent());
+		
+		return sonRight;
+    }
+    
+	private Node rotateLeftDouble(Node node) {
+		node.setLeftChild(rotateLeft(node.getLeftChild()));
+		return rotateRight(node);
+		
+	}
+
+    private Node rotationRightDouble(Node node) {
+    	 node.setRightChild(rotateRight(node.getRightChild()));
+    	    return rotateLeft(node);
+		
+	}
+    
+	public Node rotateRight(Node node) {
 		 Node leftChild = node.getLeftChild();
 		    leftChild.setParent(node.getParent());
 
@@ -281,39 +306,7 @@ public class AVLTree{
 		    return leftChild;
 		
 	}
-    
-	public Node rotateLeft(Node node) { //ESQUERDA
-		 System.out.println("Aplicando rotação à esquerda simples em nó " + node.getKey());
-		    
-		    Node child = node.getRightChild();
-		    
-		    child.setParent(node.getParent());
-		    child.setLeftChild(node);
-		    
-		    node.setParent(child);
-		    
-		    /*int FBNo = getBalanceFactor(node);
-		    int FBChild = getBalanceFactor(child);
-		    node.setFB(FBNo);
-		    child.setFB(FBChild);*/
-		    
-		    System.out.println("Rotação à esquerda simples aplicada em nó " + node.getKey());
-		    
-		    return child;
-    }
-    
 
-    private Node rotationRightDouble(Node node) {
-    	 node.setRightChild(rotateRight(node.getRightChild()));
-    	    return rotateLeft(node);
-		
-	}
-
-	private Node rotationLeftDouble(Node node) {
-		  node.setLeftChild(rotateLeft(node.getLeftChild()));
-		    return rotateRight(node);
-		
-	}
 
 
 
