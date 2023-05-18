@@ -55,7 +55,7 @@ public class TreeRB {
             
     }
 
-    public 	Node insert(int key) throws NodeExistsException  {
+    ublic 	Node insert(int key) throws NodeExistsException  {
     	
 		// 0 = black
 		// 1 = red
@@ -72,7 +72,9 @@ public class TreeRB {
         } else {
             parent.setRightChild(newNode);
         }
+        
         newNode.setColor(1);
+        verifyColor(newNode);
         
         return newNode;
     
@@ -112,6 +114,9 @@ public class TreeRB {
     			uncleColor = 0;
     			if(uncle !=null) {
     				uncle.setColor(uncleColor);
+    			}
+    			if(grampa.getParent().getColor() == 1) {
+    				verifyColor(grampa);
     			}
     			
     		}
