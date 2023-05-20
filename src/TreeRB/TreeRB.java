@@ -55,7 +55,7 @@ public class TreeRB {
             
     }
 
-    ublic 	Node insert(int key) throws NodeExistsException  {
+    public 	Node insert(int key) throws NodeExistsException  {
     	
 		// 0 = black
 		// 1 = red
@@ -108,7 +108,7 @@ public class TreeRB {
     		//verificando as cores dos envolvidos
     		// 0 = black
     		// 1 = red
-    		if(grampa.getColor() == 0 && daddy.getColor() == 1 && uncleColor ==1) {
+    		if(grampa.getColor() == 0 && daddy.getColor() == 1 && uncleColor ==1 && no.getColor()== 1) {
     			grampa.setColor(1);
     			daddy.setColor(0);
     			uncleColor = 0;
@@ -117,9 +117,57 @@ public class TreeRB {
     			}
     			if(grampa.getParent().getColor() == 1) {
     				verifyColor(grampa);
+    			}    			
+    		}
+    		//case 3
+    		if(grampa.getColor()==0 && daddy.getColor()==1 && uncleColor == 0 && no.getColor()==1) {
+        		// 0 = black
+        		// 1 = red
+    			
+    			Node greatGrampa = grampa.getParent();
+    			
+    			if(greatGrampa !=null) {
+    				if(grampa.isLeftChild()) {
+        				greatGrampa.setLeftChild(daddy);
+        			}else if(grampa.isRightChild()) {
+        				greatGrampa.setRightChild(daddy);
+        			}
+    				daddy.setParent(greatGrampa);
+    			} 
+    			
+    			if(grampa.getRightChild() == null && daddy.getRightChild() == null) {
+    	  			//rotação direita simples
+        			grampa.setParent(daddy);
+        			grampa.setLeftChild(null);
+        			daddy.setRightChild(grampa);
+        			
+        			//recolorindo após mudança dos ponteiros
+        			daddy.setColor(0);
+        			grampa.setColor(1);
+        			
+    			}else if(grampa.getLeftChild() == null && daddy.getLeftChild() == null) {
+    				//rotação esquerda simples
+    				
     			}
+
+
+    			
+    			    			
+  
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
     			
     		}
+    		
     	}
     	
     }
