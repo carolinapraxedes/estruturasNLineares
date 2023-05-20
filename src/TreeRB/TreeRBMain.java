@@ -10,7 +10,7 @@ public class TreeRBMain {
 		arvore.printTree();
 		
 		System.out.println("==================");
-		arvore.remove(6);
+		
 		arvore.printTree();
 		
 		

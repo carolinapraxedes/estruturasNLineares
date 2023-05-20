@@ -76,6 +76,7 @@ public class TreeRB {
         newNode.setColor(1);
         verifyColor(newNode);
         
+        
         return newNode;
     
     }
@@ -115,7 +116,9 @@ public class TreeRB {
     			if(uncle !=null) {
     				uncle.setColor(uncleColor);
     			}
-    			if(grampa.getParent().getColor() == 1) {
+    			
+    			if(grampa.getParent() !=null && grampa.getParent().getColor() == 1) {
+    				
     				verifyColor(grampa);
     			}    			
     		}
@@ -125,46 +128,135 @@ public class TreeRB {
         		// 1 = red
     			
     			Node greatGrampa = grampa.getParent();
+    			Node oldDaddy = daddy;
     			
-    			if(greatGrampa !=null) {
-    				if(grampa.isLeftChild()) {
-        				greatGrampa.setLeftChild(daddy);
-        			}else if(grampa.isRightChild()) {
-        				greatGrampa.setRightChild(daddy);
-        			}
-    				daddy.setParent(greatGrampa);
-    			} 
+    			
     			
     			if(grampa.getRightChild() == null && daddy.getRightChild() == null) {
     	  			//rotação direita simples
         			grampa.setParent(daddy);
-        			grampa.setLeftChild(null);
+        			grampa.setRightChild(null);
         			daddy.setRightChild(grampa);
         			
         			//recolorindo após mudança dos ponteiros
         			daddy.setColor(0);
         			grampa.setColor(1);
         			
+        			if(greatGrampa !=null) {
+        				if(grampa.isLeftChild()) {
+            				greatGrampa.setLeftChild(daddy);
+            			}else if(grampa.isRightChild()) {
+            				greatGrampa.setRightChild(daddy);
+            			}
+        				daddy.setParent(greatGrampa);
+        			} else {
+        				daddy = root;
+        			}
+        			verifyRoot(root);
+        			
     			}else if(grampa.getLeftChild() == null && daddy.getLeftChild() == null) {
     				//rotação esquerda simples
+    				grampa.setParent(daddy);
+    				grampa.setLeftChild(null);
+    				daddy.setLeftChild(grampa);
+    				
+        			daddy.setColor(0);
+        			grampa.setColor(1);
+        			
+        			if(greatGrampa !=null) {
+        				if(grampa.isLeftChild()) {
+            				greatGrampa.setLeftChild(daddy);
+            			}else if(grampa.isRightChild()) {
+            				greatGrampa.setRightChild(daddy);
+            			}
+        				daddy.setParent(greatGrampa);
+        			}  else {
+        				daddy = root;
+        			}
+        			verifyRoot(root);
+    				
+    				
+    			}else if(grampa.getLeftChild() == null && daddy.getRightChild() == null) {
+    				//rotaçao esquerda dupla
+    				Node sonLeft = daddy.getLeftChild();
+    				
+    				
+    				//primeira rotacao pra direita
+    				grampa.setRightChild(sonLeft);
+    				sonLeft.setParent(grampa);
+    				
+    				sonLeft.setRightChild(daddy);
+    				daddy.setParent(sonLeft);
+    				
+    				daddy.setLeftChild(null);
+    				   				
+    				//segunda rotacao pra esquerda
+    				sonLeft.setParent(greatGrampa);
+    				sonLeft.setLeftChild(grampa);
+    				sonLeft.setRightChild(daddy);
+    				
+    				grampa.setParent(sonLeft);
+    				daddy.setParent(sonLeft);
+    				
+    				if(greatGrampa !=null) {
+        				if(grampa.isLeftChild()) {
+            				greatGrampa.setLeftChild(oldDaddy);
+            			}else if(grampa.isRightChild()) {
+            				greatGrampa.setRightChild(oldDaddy);
+            			}
+        				sonLeft.setParent(greatGrampa);
+        			}  else {
+        				sonLeft = root;
+        			}
+    				
+    				sonLeft.setColor(0);
+    				daddy.setColor(1);
+    				grampa.setColor(1);
+    				verifyRoot(root);
+    			
+    			
+            		// 0 = black
+            		// 1 = red
+    			}else if(grampa.getRightChild() == null && daddy.getLeftChild() == null) {
+    				//rotaçao direita dupla
+    				Node sonRight = daddy.getRightChild();
+    				
+    				//primeira rotacao pra esquerda
+    				sonRight.setLeftChild(uncle);
+    				sonRight.setRightChild(null);
+    				
+    				daddy.setParent(sonRight);
+    				sonRight.setParent(grampa);
+    				
+    				
+    				//segunda rotacao pra direita
+    				sonRight.setParent(greatGrampa);
+    				
+    				sonRight.setLeftChild(daddy);
+    				sonRight.setRightChild(grampa);
+    				
+    				grampa.setParent(sonRight);
+    				daddy.setParent(sonRight);
+    				
+    				if(greatGrampa !=null) {
+        				if(grampa.isLeftChild()) {
+            				greatGrampa.setLeftChild(oldDaddy);
+            			}else if(grampa.isRightChild()) {
+            				greatGrampa.setRightChild(oldDaddy);
+            			}
+        				sonRight.setParent(greatGrampa);
+        			}  else {
+        				sonRight = root;
+        			}
+    				
+    				
+    				sonRight.setColor(0);
+    				daddy.setColor(1);
+    				grampa.setColor(1);
+    				verifyRoot(root);
+    				
     				
     			}
-
-
-    			
-    			    			
-  
-    			
-    			
-    			
-    			
-    			
-    			
-    			
-    			
-    			
-    			
-    			
     			
     		}
     		
@@ -172,6 +264,12 @@ public class TreeRB {
     	
     }
     
+
+    public void verifyRoot(Node no) {
+    	if(no == root) {
+    		no.setColor(0);
+    	}
+    }
     
     public int remove(int key) throws NodeExistsException{
         Node no = search(root,key);
@@ -257,7 +355,9 @@ public class TreeRB {
     	Object tree[][] = new Object[height(getRoot()) +1 ][ArrayNo.size()];
     	
     	for(int i = 0; i<ArrayNo.size();i++) {
-    		tree[depth(ArrayNo.get(i))][i] = ArrayNo.get(i).getKey();
+    		 String cor = ArrayNo.get(i).getColor() == 1 ? "\033[31m" : "\033[0m"; // Define a cor vermelha se o nó for rubro
+    		tree[depth(ArrayNo.get(i))][i] =cor + ArrayNo.get(i).getKey()+ "\033[0m";
+    		
     	}
     	
     	for(int l = 0;l<height(getRoot())+1;l++) {
